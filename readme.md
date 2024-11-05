@@ -75,18 +75,119 @@ comparing the two:
 11111111.11111111.11111111.00000000
 11000000.10101000.00000001.00000001
 
-> We can see that the network part of the IP adress are the three first octects
-> The remaining octet is the host part
+> We can see that the network part of the IP adress are the three first octects.
+> The remaining octet is the host part.
+```
+> Don't worry, you won't have to do binary conversions by head. Some practice will be enough to associate values with their binary representation
+
+
+### The network part
+Lets keep working with out example IP. The network part of the adress is the **common** adress shared by all machines on a subnet. For instance, imagine a home network; all your machines connected to you local network will share the host part of your IP.
+
+```mermaid
+---
+config:
+  look: handDrawn
+  theme: forest
+---
+flowchart LR
+	A("Computer 1
+	192.168.1.10")
+	B("Computer 2
+	192.168.1.11")
+	C("Printer 2
+	192.168.1.12")
+
+	A --> B --> C ----> A
+```
+Notice how only the host part is changing - that is because all the devices are connected to the same network, and therefore share the same **network address**
+
+### The host part
+Now that that's clear, let's take a moment to focus on that host part of the IP adress. 
+
+It determines the number of machines that can be connected to that specific network. In our previous example, our mask was `255.255.255.0` (also known as /24), which covers a pretty wide range of adresses - this means that we can connect up to 254 machines to that subnet, with adresses ranging from 1 to 254.
+
+> Wait, I thought each octet could go up to 255 ? 
+
+That's correct ! However, you should never use the smallest and greatest adresses (let's say, .0 and .255). Those are reserved adresses and your stuff won't work if you try that shit. Your range should always be the `range of your subnet - 2`. 
+
+The formula to determine the size of your subnet is `255 - the host part of your IP adress`
+
+> Examples are very useful !
 
 ```
--> Don't worry, you won't have to do binary conversions by head. Some practice will be enough to associate values with their binary representation
+Example
+--
+> Mask: 255.255.255.128
+> Host part: 128
+> Subnet range: 
+	255 - 128 = 127
 
-The host part of a subnet mask determines the number of machines that can be connected to that specific network. In our previous example, we had the least restrive host limitation, which is 0 (also represented as /16).
+You can connect (127 - 2) machines to your subnetwork.
 
-A more restrive subnet allows for neater parting of networks. 
+Your mask allows for 2 subnetworks in you network, with ranges :
+	- .0 to .127,
+	- .128 to .255
+
+Since we always exclude min and max, the usable range of addresses for this mask would be:
+	- .1 to .126
+	- .129 to .254
+```
+
+### Subnets
+Alright, so our .0 (/24) mask let us use 254 different adresses. Using such a large range of machines can lead to issues, and we prefer dividing large networks into smaller and more manageable ones for a variety of reasons, some of which are listed below:
+
+- Smaller networks experience less congestions, 
+- Data transfer between machines of the same subnet is more efficient, 
+- Smaller networks are easier to monitor and to securise, allowing for tailoring specific security needs (ie, your accounting departement might need tighter security than other services).
+- It helps optimize IP usage by creating smaller adresses pools, also facilitating organisation (ie, your accounting department will have adresses ranging from 0 to 64, while human ressources will go from 65 to 128...)
+- Makes routing more efficient by reducing the size of routing tables.
+- Makes the network more scalable by easily allowing new subnets to be added...
 
 
 [Here is a cheat sheet of mask values and the adresses they cover](https://dnsmadeeasy.com/support/subnet)
+
+## Routes, switchs and other fun stuff
+
+### Switches
+A switch is a device connecting multiples machines within a network, typically a LAN (Local Area Network). They allow devices to communicate with each other within a given network.
+
+Using switches allow for an optimized data transmission process. The data is sent directly to the port requiring it, while also allowing simultaneous transmission and reception (also called **full-duplex mode**).
+
+Switches connect machines **within** a network - the network adresses of the machines must remain identical.
+
+```mermaid
+---
+config:
+  look: handDrawn
+  theme: forest
+---
+flowchart TD
+
+	A("Computer 1
+	192.168.1.10")
+	B("Computer 2
+	192.168.1.11")
+	C("Printer 2
+	192.168.1.12")
+	D{SWITCH}
+
+	A --> D --> A
+	B --> D --> B
+	C --> D --> C
+```
+
+### Routers 
+Routers connect networks or subnetworks together. They functionnalities include:
+- Managing data traffic between networks, 
+- Allow multiple devices to use the same Internet connection, 
+- Connect LANs to WAN (Wide Area Networks)
+
+A router, as the name implies, handles routing. That is the process of selecting paths in a network along which data will travel. Indeed, the way from one machine to another is rarely simple - imagine you're emailing (yes, this is 2004. We are emailing people) your friend who lives in Japan. 
+
+In order to reach your friend, the email has to go through your own router, then you ISP router, then a major router in your country, then a transatlantic cable router, then a router in Tokyo, etc. Every step of the way, your email is sent on to the next step, which is determined by the 
+
+
 ## Three ways handshake
 where 
 - SYN = synchronise and 
