@@ -156,27 +156,6 @@ Using switches allow for an optimized data transmission process. The data is sen
 
 Switches connect machines **within** a network - the network adresses of the machines must remain identical.
 
-```mermaid
----
-config:
-  look: handDrawn
-  theme: forest
----
-flowchart TD
-
-	A("Computer 1
-	192.168.1.10")
-	B("Computer 2
-	192.168.1.11")
-	C("Printer 2
-	192.168.1.12")
-	D{SWITCH}
-
-	A --> D --> A
-	B --> D --> B
-	C --> D --> C
-```
-
 ### Routers 
 Routers connect networks or subnetworks together. They functionnalities include:
 - Managing data traffic between networks, 
@@ -185,7 +164,11 @@ Routers connect networks or subnetworks together. They functionnalities include:
 
 A router, as the name implies, handles routing. That is the process of selecting paths in a network along which data will travel. Indeed, the way from one machine to another is rarely simple - imagine you're emailing (yes, this is 2004. We are emailing people) your friend who lives in Japan. 
 
-In order to reach your friend, the email has to go through your own router, then you ISP router, then a major router in your country, then a transatlantic cable router, then a router in Tokyo, etc. Every step of the way, your email is sent on to the next step, which is determined by the 
+In order to reach your friend, the email has to go through your own router, then you ISP router, then a major router in your country, then a transatlantic cable router, then a router in Tokyo, etc. Every step of the way, your email is sent on to the next step, which is determined by the routing table. 
+
+A routing contains the final destination of the packet the router is currently processing and the next step it should take to reach that final destination. 
+
+For instance: 
 
 
 ## Three ways handshake
